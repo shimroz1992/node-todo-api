@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 
+//mongoose use for ORM
+
 var Todo = mongoose.model('Todo', {
   text: {
     type: String,
