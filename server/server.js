@@ -1,3 +1,14 @@
+var env = process.env.NODE_ENV || 'development';
+console.log('env ***********', env);
+
+if(env === 'development'){
+  process.env.PORT = 3000
+  process.env.MONGODB_URI = 'mongodb://localhost:27017/TodoApp'
+}else if(env === 'test'){
+  process.env.PORT = 3000
+  process.env.MONGODB_URI = 'mongodb://localhost:27017/TodoTestApp'
+}
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const {ObjectID} = require('mongodb');
@@ -16,6 +27,7 @@ app.get('/', (req, res) => {
   res.send('<h1>It\'s a api project</h1>');
 });
 
+// create todo
 app.post('/todos', (req, res) => {
 	var todo = new Todo({
 		text: req.body.text
@@ -30,6 +42,7 @@ app.post('/todos', (req, res) => {
   console.log(req.body);
 })
 
+// get todo
 app.get('/todos', (req, res) => {
   Todo.find().then((todos) => {
     res.send({todos});
@@ -39,7 +52,7 @@ app.get('/todos', (req, res) => {
 });
 
 
-// /todo/1234
+// show todo
 
 app.get('/todo/:id', (req, res) => {
   var id = req.params.id;
@@ -53,6 +66,8 @@ app.get('/todo/:id', (req, res) => {
   })
 })
 
+
+// delete todo
 app.delete('/todo/:id', (req, res) => {
   var id = req.params.id;
   if(!ObjectID.isValid(id)){
@@ -69,6 +84,9 @@ app.delete('/todo/:id', (req, res) => {
     res.status(400).send(e);
   })
 })
+
+
+// update todo
 
 app.patch('/todo/:id', (req, res) => {
   var id = req.params.id;
